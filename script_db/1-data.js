@@ -1,3 +1,4 @@
+/*
 let error = true
 
 let res = [
@@ -9,4 +10,4 @@ printjson(res)
 if (error) {
   print('Error, exiting')
   quit(1)
-}
+}*/
