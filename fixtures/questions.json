@@ -1,0 +1,20 @@
+{
+  "_id": {
+    "$oid": "60cb446afad56a00a82f21f2"
+  },
+  "entitled": "Je préfère réaliser des activités avec d’autres personnes plutôt que seul(e).",
+  "choices": [
+    1,
+    1,
+    0,
+    0
+  ],
+  "type": {
+    "_id": {
+      "$oid": "60c77d024f4f3e0012a211a7"
+    },
+    "name": "Habiletés sociales",
+    "__v": 1
+  },
+  "__v": 0
+}

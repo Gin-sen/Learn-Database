@@ -1,0 +1,17 @@
+{
+  "_id": {
+    "$oid": "60c77d024f4f3e0012a211a7"
+  },
+  "email": "ok@liosfr.net",
+  "username": "Liosfr2",
+  "password": "$2a$08$7/ETPNFxBGkgTctMO4qd.uK/JILQqmpTIZElIdbnhRRS16xvgkv8u",
+  "tokens": [
+    {
+      "_id": {
+        "$oid": "60c77d024f4f3e0012a211a8"
+      },
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGM3N2QwMjRmNGYzZTAwMTJhMjExYTciLCJpYXQiOjE2MjM2ODY0MDJ9.5sIGCEiCOXDvdJLfPGQMsmOySGD8gAk8RADc--unj6o"
+    }
+  ],
+  "__v": 1
+}
