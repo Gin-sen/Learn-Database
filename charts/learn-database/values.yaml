@@ -4,10 +4,10 @@
 fullnameOverride: learn-database
 replicaCount: 1
 image:
-  repository: VALUE_TO_BE_OVERRIDDEN
+  repository: learnstudiocregistry.azurecr.io/learn-studio-database
   tag: latest
 
-imagePullSecrets: []
+imagePullSecrets: value
   # Optionally specify an array of imagePullSecrets.
   # Secrets must be manually created in the namespace.
   # ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
@@ -15,10 +15,10 @@ imagePullSecrets: []
   # This uses credentials from secret "myRegistryKeySecretName".
   # - name: myRegistryKeySecretName
 service:
-  port: 8080
+  port: 27017
 
 env:
-  pgpassword: Azqazq123
+  password: Azqazq123
   user: learn
   database: learn-db
 

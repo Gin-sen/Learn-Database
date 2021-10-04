@@ -1,0 +1,52 @@
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    
+    - name: Helm tool installer
+      uses: Azure/setup-helm@v1
+      with:
+        version: latest
+        token: ${{ github.token }}
+    
+    - uses: azure/docker-login@v1
+      with:
+        login-server: learnstudiocregistry.azurecr.io
+        username: ${{ secrets.acr_learnstudiocregistry_username }}
+        password: ${{ secrets.acr_learnstudiocregistry_password }}
+    
+    - name: Build and push image to ACR
+      id: build-image
+      run: |
+        docker build "$GITHUB_WORKSPACE/" -f  "Dockerfile" -t learnstudiocregistry.azurecr.io/learn-studio-database:${{ github.run_attempt }} --label dockerfile-path=Dockerfile
+        docker push learnstudiocregistry.azurecr.io/clusterlearnstudio:${{ github.run_attempt }}
+    
+    - uses: azure/k8s-set-context@v1
+      with:
+         kubeconfig: ${{ secrets.aks_clusterlearnstudio_kubeConfig }}
+      id: login
+    
+    - name: Get namespace (testing purposes)
+      run: |
+        namespacePresent=`kubectl get namespace | grep learn-studio | wc -l`
+        if [ $namespacePresent -eq 0 ]
+        then
+            echo `kubectl get namespace learn-studio`
+        fi
+
+    - uses: azure/k8s-create-secret@v1
+      with:
+        namespace: learn-studio
+        container-registry-url: learnstudiocregistry.azurecr.io
+        container-registry-username: ${{ secrets.acr_learnstudiocregistry_username }}
+        container-registry-password: ${{ secrets.acr_learnstudiocregistry_password }}
+        secret-name: clusterlearndockerauth
+        
+        
+    - name: Helm upgrade
+      run: |
+        helm upgrade -n learn-studio --set "imagePullSecrets=clusterlearndockerauth" --set "image.repository=learnstudiocregistry.azurecr.io/learnstudiodb" \
+        --set "image.tag=${{ github.run_attempt }}" --set "env.pgpassword=learn123" --set "env.database=learn_db" --set "env.user=node_user" \
+        --set "applicationInsights.InstrumentationKey=" learn-database charts/learn-database
