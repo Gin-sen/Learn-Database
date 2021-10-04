@@ -30,36 +30,34 @@ spec:
           livenessProbe:
             exec:
               command:
-                - psql
-                - -U
-                - learn
-                - -d
-                - learn-db
-                - -c
-                - "SELECT 1"
-            initialDelaySeconds: 15
-            timeoutSeconds: 2
+              - mongo
+              - --disableImplicitSessions
+              - --eval
+              - "db.adminCommand('ping')"
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
           readinessProbe:
             exec:
               command:
-                - psql
-                - -U
-                - learn
-                - -d
-                - learn-db
-                - -c
-                - "SELECT 1"
-            initialDelaySeconds: 45
-            timeoutSeconds: 2
+              - mongo
+              - --disableImplicitSessions
+              - --eval
+              - "db.adminCommand('ping')"
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
           env:
-            - name: POSTGRES_PASSWORD
-              value: {{ .Values.env.pgpassword }}
-            - name: POSTGRES_USER
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: {{ .Values.env.password }}
+            - name: MONGO_INITDB_ROOT_USERNAME
               value: {{ .Values.env.user }}
-            - name: POSTGRES_DB
+            - name: MONGO_INITDB_DATABASE
               value: {{ .Values.env.database }}
-            - name: PGPASSWORD
-              value: {{ .Values.env.pgpassword }}
             - name: APPINSIGHTS_INSTRUMENTATIONKEY
               value: {{ .Values.applicationInsights.InstrumentationKey }}
             {{- $root := . }}
@@ -76,7 +74,7 @@ spec:
 {{ toYaml .Values.resources | indent 12 }}
     {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
-      {{- range .Values.imagePullSecrets }}
+      {{- with .Values.imagePullSecrets }}
         - name: {{ . }}
       {{- end}}
     {{- end }}
