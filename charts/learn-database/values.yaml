@@ -5,9 +5,9 @@ fullnameOverride: learn-database
 replicaCount: 1
 image:
   repository: learnstudiocregistry.azurecr.io/learn-studio-database
-  tag: latest
+  tag: 1.0.0
 
-imagePullSecrets: value
+imagePullSecrets: clusterlearndockerauth
   # Optionally specify an array of imagePullSecrets.
   # Secrets must be manually created in the namespace.
   # ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
@@ -18,9 +18,9 @@ service:
   port: 27017
 
 env:
-  password: Azqazq123
-  user: learn
-  database: learn-db
+  database: learn_db
+  user: node_user
+  password: learn123
 
 ingress:
   enabled: false
